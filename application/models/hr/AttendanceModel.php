@@ -305,7 +305,7 @@ class AttendanceModel extends MasterModel{
 			
             if(!empty($param['emp_id'])){$data['where']['attendance_log.emp_id'] = $param['emp_id'];}
             
-			if(!in_array($this->userRole,[1,-1,3])):
+			if(!in_array($this->userRole,[1,-1,3,2])):
 				$data['customWhere'][] = '(find_in_set("'.$this->loginId.'", employee_master.super_auth_id) > 0 OR employee_master.id = '.$this->loginId.')';
 			endif;
 			
