@@ -127,7 +127,7 @@ class EmployeeModel extends MasterModel{
     public function getEmployeeDetail($data){
         $queryData['tableName'] = $this->empMaster;
         $queryData['select'] = "employee_master.id, employee_master.emp_role, employee_master.emp_code, employee_master.emp_name, employee_master.nominee_name, employee_master.emp_mobile_no, employee_master.emp_designation, employee_master.emp_birthdate, employee_master.emp_joining_date, employee_master.emp_height, employee_master.emp_weight, employee_master.emp_blood_group, employee_master.emp_gender,emp_designation.title as emp_designation, shift_master.shift_name, shift_master.late_in, shift_master.late_fine, shift_master.shift_start";
-		$queryData['select'] .= ",(if(employee_master.emp_profile IS NULL, 'https://phoenix.nativebittechnologies.in/assets/uploads/emp_profile/user_default.png', CONCAT('https://phoenix.nativebittechnologies.in/assets/uploads/emp_profile/',employee_master.emp_profile))) as emp_profile";
+		$queryData['select'] .= ",(if(employee_master.emp_profile IS NULL, 'https://jnrinfra.nbterp.com/assets/uploads/emp_profile/user_default.png', CONCAT('https://jnrinfra.nbterp.com/assets/uploads/emp_profile/',employee_master.emp_profile))) as emp_profile";
 		
         $queryData['leftJoin']['emp_designation'] = "employee_master.emp_designation = emp_designation.id";
         $queryData['leftJoin']['shift_master'] = "employee_master.shift_id = shift_master.id";
@@ -304,7 +304,7 @@ class EmployeeModel extends MasterModel{
     public function getEmpDocuments($param=[]){
         $queryData['tableName'] = "emp_docs";
         $queryData['select'] = "emp_docs.id, emp_docs.emp_id, emp_docs.doc_name, emp_docs.doc_no, emp_docs.doc_type";
-		$queryData['select'] .= ",(if(emp_docs.doc_file IS NULL, '', CONCAT('https://phoenix.nativebittechnologies.in/assets/uploads/employee/documents/',emp_docs.doc_file))) as doc_file";
+		$queryData['select'] .= ",(if(emp_docs.doc_file IS NULL, '', CONCAT('https://jnrinfra.nbterp.com/assets/uploads/employee/documents/',emp_docs.doc_file))) as doc_file";
 
         if (!empty($param['emp_id'])) { $queryData['where']['emp_docs.emp_id'] = $param['emp_id']; }
 

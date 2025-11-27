@@ -762,6 +762,7 @@ class Migration extends CI_Controller{
             $this->db->trans_begin();
 			
 			$this->db->reset_query();
+			$this->db->where('grn_status', '0');
             $result = $this->db->get('temp_mt_migration')->result();
 			
 			$i = 0;

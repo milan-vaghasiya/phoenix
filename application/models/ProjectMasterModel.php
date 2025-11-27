@@ -36,7 +36,9 @@ class ProjectMasterModel extends MasterModel{
 				$errorMessage['project_name'] = "Project name is duplicate.";
 				return ['status' => 0, 'message' => $errorMessage];
             endif;
-
+			
+			$data['lat_lng'] = (!empty($data['lat']) && !empty($data['lng']) ? $data['lat'].",".$data['lng'] : NULL);
+			
             $result = $this->store($this->projectMaster, $data, 'Project');
 
             if($this->db->trans_status() !== FALSE) :
@@ -317,25 +319,14 @@ class ProjectMasterModel extends MasterModel{
         $queryData['leftJoin']['party_master'] = "party_master.id = agency_work.agency_id";
 		$queryData['leftJoin']['project_milestone'] = "project_milestone.id = agency_work.work_id";
 		$queryData['leftJoin']['select_master'] = "select_master.id = project_milestone.work_type_id";
-		/*
-		if(!empty($data['workDetails'])):
-			$queryData['select'] .= ", IFNULL(select_master.labor_cat_ids,'') as labor_cat_ids";
-			$queryData['leftJoin']['project_milestone'] = "project_milestone.id = agency_work.work_id";
-			$queryData['leftJoin']['select_master'] = "select_master.id = project_milestone.work_type_id";
-		endif;
-		*/
+
 		$queryData['order_by']['agency_work.work_id'] = 'ASC';
 		if(!empty($data['tower'])):
 			$queryData['select'] .= ",project_milestone.tower_name";
-			//$queryData['group_by'][] = 'project_milestone.tower_name';
 			$queryData['order_by']['project_milestone.tower_name'] = 'ASC';
 		endif;
 
         $queryData['where']['agency_work.project_id'] = $data['project_id'];
-		
-		//$queryData['group_by'][] = 'agency_work.id';
-		//$queryData['group_by'][] = 'agency_work.agency_id';
-		//$queryData['group_by'][] = 'agency_work.work_id';
 		
         $result = $this->rows($queryData);
         return $result;

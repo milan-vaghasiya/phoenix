@@ -370,13 +370,13 @@ class SiteTrans extends MY_ApiController{
 					if(!empty($laborCatList)){
 						$row->labor_category = $laborCatList;
 					}
-					else{$row->labor_category = [];}
+					else{$row->labor_category = [];  }
+					
+					$row->agency_name = $row->agency_name. ' ('.$row->tower_name.' - '.$row->work_type.')';
+					unset($row->labor_cat_ids);
+					$this->data['agencyList'][] = $row;
 				}
-				else{$row->labor_category = [];}
-				
-				$row->agency_name = $row->agency_name. ' ('.$row->tower_name.' - '.$row->work_type.')';
-				unset($row->labor_cat_ids);
-				$this->data['agencyList'][] = $row;
+				//else{ $row->labor_category = []; }
 			}
 		}
 		

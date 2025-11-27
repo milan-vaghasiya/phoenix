@@ -30,7 +30,8 @@ class Attendance extends MY_ApiController{
 		$lateGraceTime = (!empty($empData->late_in) ? ($empData->late_in * 60) : 0);
 		if(!empty($empPunches[0]) AND (strtotime($shiftStart) + $lateGraceTime) < strtotime($empPunches[0]))
 		{
-			$lateSec = strtotime(intval($empPunches[0])) - intval(strtotime($shiftStart));
+			$lateSec = strtotime($empPunches[0]) - strtotime($shiftStart);
+			
 			$response['warn_msg'] = "Ohh! You are late...😌 (".s2hi($lateSec).")";
 		}
         // Remove columns from result

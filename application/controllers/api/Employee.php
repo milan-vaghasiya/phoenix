@@ -51,5 +51,40 @@ class Employee extends MY_ApiController{
 		endif;
     }
 
+	public function updateProfile(){
+        $data = $this->input->post();
+        $errorMessage = array();
+
+        if($_FILES['emp_profile']['name'] != null || !empty($_FILES['emp_profile']['name'])):
+            $this->load->library('upload');
+            $_FILES['userfile']['name']     = $_FILES['emp_profile']['name'];
+            $_FILES['userfile']['type']     = $_FILES['emp_profile']['type'];
+            $_FILES['userfile']['tmp_name'] = $_FILES['emp_profile']['tmp_name'];
+            $_FILES['userfile']['error']    = $_FILES['emp_profile']['error'];
+            $_FILES['userfile']['size']     = $_FILES['emp_profile']['size'];
+            
+            $imagePath = realpath(APPPATH . '../assets/uploads/emp_profile/');
+            $ext = pathinfo($_FILES['emp_profile']['name'], PATHINFO_EXTENSION);
+
+            $config = ['file_name' => $data['id'].'.'.$ext,'allowed_types' => '*','max_size' => 10240,'overwrite' => FALSE, 'upload_path' => $imagePath];
+
+            if(file_exists($config['upload_path'].'/'.$config['file_name'])) unlink($config['upload_path'].'/'.$config['file_name']);
+
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload()):
+                $errorMessage['emp_profile'] = $this->upload->display_errors();
+            else:
+                $uploadData = $this->upload->data();
+                $data['emp_profile'] = $uploadData['file_name'];
+            endif;
+        endif;
+
+        if(!empty($errorMessage)):
+            $this->printJson(['status'=>0,'message'=>$errorMessage]);
+        else: 
+            $this->printJson($this->employee->store("employee_master",$data,'Employee'));
+        endif;
+    }
+
 }
 ?>
