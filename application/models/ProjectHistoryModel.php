@@ -38,7 +38,11 @@ class ProjectHistoryModel extends MasterModel{
             $queryData['like']['project_history.trans_date'] = $param['search'];
         endif;
 		
-		$queryData['order_by']['project_history.created_at'] = 'DESC'; 
+		if(!empty($param['order_by'])){ 
+			$queryData['order_by']['project_history.created_at'] = $param['order_by']; 
+		}else{
+			$queryData['order_by']['project_history.created_at'] = 'DESC'; 
+		}
 		
 		if(!empty($param['limit'])): 
 			$queryData['limit'] = $param['limit']; 
